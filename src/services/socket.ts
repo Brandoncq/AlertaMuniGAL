@@ -1,14 +1,14 @@
 import Pusher from 'pusher-js';
 
 // Soketi connection
-export const pusher = new Pusher('pxZkkTUkx5UQ4cEmvDRgcZ5nwbpQY535', {
-  wsHost: 'soketi.tamatacna.com',
-  wsPort: 80,
+export const pusher = new Pusher(import.meta.env.VITE_SOKETI_KEY || 'pxZkkTUkx5UQ4cEmvDRgcZ5nwbpQY535', {
+  wsHost: import.meta.env.VITE_SOKETI_HOST || 'soketi.tamatacna.com',
+  wsPort: Number(import.meta.env.VITE_SOKETI_PORT) || 80,
   wssPort: 443,
-  forceTLS: true,
+  forceTLS: import.meta.env.VITE_SOKETI_SECURE !== 'false', // Si el .env dice false, desactiva TLS
   disableStats: true,
   enabledTransports: ['ws', 'wss'],
-  cluster: '' // No se usa en Soketi pero pusher-js lo pide a veces
+  cluster: '' 
 });
 
 export const subscribeToDashboard = (callback: (event: string, data: any) => void) => {
